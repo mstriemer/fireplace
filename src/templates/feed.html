@@ -1,6 +1,43 @@
 {% include '_macros/feed_item.html' %}
 {% include '_macros/more_button.html' %}
 
+<div class="desktop-promo">
+  <div class="desktop-promo-nav-left arrow-button-left" direction="prev">{{ _('Previous') }}</div>
+  <div class="desktop-promo-items" data-action="start">
+    <div class="desktop-promo-item">
+      <img src="/media/img/drive.png">
+      <div class="desktop-promo-item-text">
+        {{ _('It\'s a thing!') }}
+      </div>
+    </div>
+    <div class="desktop-promo-item">
+      <img src="/media/img/dropbox.png">
+      <div class="desktop-promo-item-text">
+        {{ _('Now on Marketplace') }}
+      </div>
+    </div>
+    <div class="desktop-promo-item">
+      <img src="/media/img/evernote.png">
+      <div class="desktop-promo-item-text">
+        {{ _('New update') }}
+      </div>
+    </div>
+    <div class="desktop-promo-item">
+      <img src="/media/img/dropbox.png">
+      <div class="desktop-promo-item-text">
+        {{ _('Dropbox again') }}
+      </div>
+    </div>
+    <div class="desktop-promo-item">
+      <img src="/media/img/evernote.png">
+      <div class="desktop-promo-item-text">
+        {{ _('Evernote again') }}
+      </div>
+    </div>
+  </div>
+  <div class="desktop-promo-nav-right arrow-button-right" direction="next">{{ _('Next') }}</div>
+</div>
+
 {% defer (url=anonApi('feed')|urlparams(limit=10), id='feed-items') %}
   <div class="feed feed-items home-feed c" data-columns>
     {% for item in this.objects %}

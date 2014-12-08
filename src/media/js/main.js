@@ -19,6 +19,8 @@ define(
         'consumer_info',
         'compatibility_filtering_select',
         'content-ratings',
+        'defer',
+        'flipsnap',
         'forms',
         'image-deferrer',
         'l10n',
@@ -57,6 +59,8 @@ function(_) {
     var buttons = require('apps_buttons');
     var capabilities = require('capabilities');
     var consumer_info = require('consumer_info');
+    var defer = require('defer');
+    var flipsnap = require('flipsnap');
     var format = require('format');
     var $ = require('jquery');
     var settings = require('settings');
@@ -328,6 +332,108 @@ function(_) {
         z.page.trigger('divert', [urls.reverse('deprecated')]);
         throw new Error('Cancel navigation; deprecated client');
     });
+
+    var desktopPromo = document.querySelector('.desktop-promo-items');
+    var promoItems = Array.prototype.slice.call(desktopPromo.children);
+    var placeholderItems = promoItems.map(function(item) {
+        var placeholder = item.cloneNode();
+        placeholder.innerHTML = item.innerHTML;
+        placeholder.classList.add('desktop-promo-placeholder-item');
+        desktopPromo.appendChild(placeholder);
+        return placeholder;
+    });
+
+    function setPromoItemsOrder() {
+        promoItems.forEach(function (placeholderItem, i) {
+            placeholderItem.style.order = i;
+        });
+    }
+
+    function showPlaceholder(placeholder, position) {
+        placeholder.classList.add('desktop-promo-placeholder-item-shown');
+        var placeholderIndex = position ===  'right' ? promoItems.length : -1;
+        placeholder.style.order = placeholderIndex;
+    }
+
+    function hidePlaceholder(placeholder) {
+        // Remove the placeholder.
+        placeholder.classList.remove('desktop-promo-placeholder-item-shown');
+    }
+
+    function setItemsOffset(position) {
+        desktopPromo.setAttribute('data-action', position);
+    }
+
+    function animateItemsOffset(position) {
+        if (['left', 'center'].indexOf(position) === -1) {
+            console.error('animating non animated promo offset');
+        }
+
+        var transitionDone = defer.Deferred();
+        setItemsOffset(position);
+        afterTransition(function () {
+            transitionDone.resolve();
+        });
+        return transitionDone.promise();
+    }
+
+    function afterTransition(callback) {
+        // Hide the placeholder after the transition ends.
+        desktopPromo.addEventListener('transitionend', function animationDone() {
+            callback();
+            // Remove this event listener.
+            desktopPromo.removeEventListener('transitionend', animationDone);
+        });
+    }
+
+    function waitForRedraw(callback) {
+        // Wait for the second animation frame because Firefox seems to perform
+        // the first request in the same cycle.
+        requestAnimationFrame(function () {
+            requestAnimationFrame(callback);
+        });
+    }
+
+    function shiftRight() {
+        // Cycle the promo items.
+        var wrappingItem = promoItems.pop();
+        promoItems.unshift(wrappingItem);
+
+        // Cycle the placeholder items.
+        var placeholder = placeholderItems.pop();
+        placeholderItems.unshift(placeholder);
+
+        setPromoItemsOrder();
+        showPlaceholder(placeholder, 'right');
+        setItemsOffset('right');
+
+        waitForRedraw(function () {
+            animateItemsOffset('center').then(function () {
+                hidePlaceholder(placeholder);
+                setItemsOffset('start');
+            });
+        });
+    }
+
+    function shiftLeft() {
+        // Cycle the promo items.
+        var wrappingItem = promoItems.shift();
+        promoItems.push(wrappingItem);
+
+        // Cycle the placeholder items.
+        var placeholder = placeholderItems.shift();
+        placeholderItems.push(placeholder);
+
+        setPromoItemsOrder();
+        showPlaceholder(placeholder, 'left');
+        animateItemsOffset('left').then(function () {
+            setItemsOffset('start');
+            hidePlaceholder(placeholder);
+        });
+    }
+
+    $('.desktop-promo-nav-left').on('click', shiftRight);
+    $('.desktop-promo-nav-right').on('click', shiftLeft);
 
     console.log('Initialization complete');
 });
