@@ -53,15 +53,66 @@ select[name=rating] {
     }
 }
 
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+
+    .back-to-app {
+        margin: auto 0;
+    }
+}
+
+.rating-lang-select-tab-control {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+@media $narrower-than-desktop {
+    .rating-lang-select-tab-control {
+        display: none;
+    }
+
+    .rating-lang-select-container {
+        margin: 0 10px 10px;
+    }
+
+    .rating-lang-select-segmented {
+        display: flex;
+
+        .mkt-segmented-button {
+            flex-grow: 1;
+        }
+    }
+
+    .write-review {
+        margin: 10px;
+        flex-grow: 1;
+    }
+}
+
+@media $at-least-desktop {
+    .rating-lang-select-segmented {
+        display: none;
+    }
+}
+
+.reviews-listing {
+    width: 100%;
+}
+
 .reviews-listing .body {
     margin-bottom: 10px;
 }
 
 // This applies to "app details" pages only.
 .reviews {
-    .not-rated {
+    .not-rated,
+    .not-lang-rated {
         color: $dark-gray;
         font-weight: 400;
+    }
+    .not-lang-rated {
+        margin-bottom: 24px;
     }
     .full .button {
         display: block;
@@ -138,16 +189,6 @@ select[name=rating] {
         .loadmore {
             padding: 24px 15px 0;
         }
-    }
-
-    .primary-button {
-        margin: 0 0 -16px;
-        min-height: 48px;
-        position: relative;
-        right: 0;
-        text-align: right;
-        top: -40px;
-        z-index: 19;
     }
 }
 
@@ -384,16 +425,6 @@ tinyStars() {
 }
 
 @media $narrower-than-desktop {
-    .primary-button {
-        padding: 15px 10px;
-        width: 100%;
-
-        .button {
-            display: block;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-    }
     .reviews-listing {
         .ratings-placeholder-inner {
             margin-bottom: 0;

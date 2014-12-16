@@ -11,6 +11,7 @@ var localConfig = extend(true, {
         'flipsnap/flipsnap.js': config.LIB_DEST_PATH,
         'marketplace-constants/dist/css/regions.styl': 'src/media/css/lib/',
         'marketplace-constants/dist/js/regions.js': config.LIB_DEST_PATH,
+        'marketplace-constants/dist/js/languages.js': config.LIB_DEST_PATH,
         'marketplace-constants/dist/img/regions/*': 'src/media/img/icons/regions/',
         'marketplace-elements/dist/js/marketplace-elements.js': config.LIB_DEST_PATH,
         'marketplace-elements/dist/css/marketplace-elements.css': 'src/media/css/lib/',
@@ -26,6 +27,7 @@ var localConfig = extend(true, {
         paths: {
             'document-register-element': 'lib/document-register-element.max',
             'flipsnap': 'lib/flipsnap',
+            'languages': 'lib/languages',
             'marketplace-elements': 'lib/marketplace-elements',
             'regions': 'lib/regions',
             'salvattore': 'lib/salvattore',

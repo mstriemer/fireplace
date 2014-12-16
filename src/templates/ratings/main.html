@@ -1,41 +1,54 @@
-{% include "_macros/market_tile.html" %}
-{% include "_macros/more_button.html" %}
-{% include "_macros/rating.html" %}
-
 <section class="main c">
   <header class="secondary-header c">
     <h2>{{ _('Reviews') }}</h2>
   </header>
-  <a href="{{ url('app', [slug]) }}" class="back-to-app">{{ _('Back to app') }}</a>
-  {% defer (url=apiParams('reviews', {'app': slug}), pluck='objects', id='ratings', paginate='.ratings-placeholder-inner') %}
-    <p id="add-review" class="primary-button">
-      {% if (response.user.can_rate or not user.logged_in()) or response.user.has_rated %}
-        {% if user.logged_in() and response.user.has_rated %}
-          <a class="button primo write-review" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
-             data-app="{{ slug }}">
-             {{ _('Edit Review') }}</a>
-        {% else %}
-          <a class="button primo write-review" id="write-review" href="{{ url('app/ratings/add', [slug]) }}"
-             data-app="{{ slug }}">
-             {{ _('Write a Review') if user.logged_in() else _('Sign in to Review') }}</a>
-        {% endif %}
-      {% endif %}
-    </p>
-    <div class="reviews reviews-listing">
-      <ul class="ratings-placeholder-inner">
-        {% for rat in this %}
-          {{ rating(rat, current_version=this.info.current_version) }}
-        {% endfor %}
+  <div id="add-review" class="review-actions">
+    <a href="{{ url('app', [slug]) }}" class="back-to-app">{{ _('Back to app') }}</a>
 
-        {# Render the more button if there's another page of results #}
-        {% if response.meta.next %}
-          {{ more_button(response.meta.next) }}
-        {% endif %}
-      </ul>
-    </div>
-  {% empty %}
-    <p class="no-results">
-      {{ _('This app has no reviews.') }}
-    </p>
-  {% end %}
+    {% if (response.user.can_rate or not user.logged_in()) or response.user.has_rated %}
+      {% if user.logged_in() and response.user.has_rated %}
+      <a class="button primo write-review" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
+         data-app="{{ slug }}">
+        {{ _('Edit Review') }}</a>
+      {% else %}
+      <a class="button primo write-review" id="write-review" href="{{ url('app/ratings/add', [slug]) }}"
+         data-app="{{ slug }}">
+        {{ _('Write a Review') if user.logged_in() else _('Sign in to Review') }}</a>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="rating-lang-select-container">
+    <mkt-segmented name="match_lang" class="match-rating-lang rating-lang-select-segmented">
+      <select>
+        <option value="1"{{ ' selected' if match_lang }}>
+        {{ user_helpers.native_lang() or _('My language') }}
+        </option>
+        <option value=""{{ ' selected' if not match_lang }}>
+        {{ _('All languages') }}
+        </option>
+      </select>
+    </mkt-segmented>
+  </div>
+
+  <mkt-tab-control name="match_lang" class="match-rating-lang rating-lang-select-tab-control">
+    <select>
+      <option value="1"{{ ' selected' if match_lang }}>
+        {{ user_helpers.native_lang() or _('My language') }}
+      </option>
+      <option value=""{{ ' selected' if not match_lang }}>
+        {{ _('All languages') }}
+      </option>
+    </select>
+  </mkt-tab-control>
+
+  <div class="rating-list">
+    {% defer (url=apiParams('reviews', {'app': slug, 'match_lang': match_lang}), pluck='objects', id='ratings', paginate='.ratings-placeholder-inner') %}
+      {% include "ratings/ratings.html" %}
+    {% placeholder %}
+      {% include "ratings/spinner.html" %}
+    {% empty %}
+      {% include "ratings/no_ratings.html" %}
+    {% end %}
+  </div>
 </section>

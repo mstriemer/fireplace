@@ -1,6 +1,6 @@
 define('views/app',
-    ['capabilities', 'content-ratings', 'l10n', 'log', 'settings', 'tracking', 'utils', 'z', 'overflow'],
-    function(caps, iarc, l10n, log, settings, tracking, utils, z) {
+    ['capabilities', 'content-ratings', 'l10n', 'log', 'settings', 'storage', 'tracking', 'utils', 'z', 'overflow'],
+    function(caps, iarc, l10n, log, settings, storage, tracking, utils, z) {
     'use strict';
 
     var gettext = l10n.gettext;
@@ -43,6 +43,7 @@ define('views/app',
         var slug = args[0];
         builder.start('detail/main.html', {
             iarc: iarc,
+            match_lang: storage.getItem('match_review_lang'),
             slug: slug
         });
 

@@ -120,20 +120,28 @@
 {% end %}
 
 <section class="main reviews-wrapper c">
-  {% defer (url=apiParams('reviews', {'app': slug}), id='ratings') %}
+  {% defer (url=apiParams('reviews', {'app': slug, 'match_lang': match_lang}), id='ratings') %}
     <div class="reviews">
       <h3>{{ _('Reviews') }}</h3>
       {% set has_second_button = this.user.can_rate or not user.logged_in() or this.user.has_rated %}
-      {% if this.meta.total_count %}
-        <ul class="ratings-placeholder-inner">
-          {% for rat in this.objects.slice(0, 2) %}
-            {{ rating(rat, detailpage=true, current_version=this.info.current_version) }}
-          {% endfor %}
-        </ul>
+      {% if this.info.total_reviews %}
+        {% if this.meta.total_count %}
+          {# Show some ratings if they match the filtered query. #}
+          <ul class="ratings-placeholder-inner">
+            {% for rat in this.objects.slice(0, 2) %}
+              {{ rating(rat, detailpage=true, current_version=this.info.current_version) }}
+            {% endfor %}
+          </ul>
+        {% else %}
+          {# Show a comment if there aren't any ratings matching the filtered query. #}
+          <p class="not-lang-rated">
+            {{ _('App not yet reviewed in your language') }}
+          </p>
+        {% endif %}
         <div class="{{ 'split' if has_second_button else 'full' }}">
           <a class="button support average-rating" href="{{ url('app/ratings', [slug]) }}">
             <span>
-              {{ this.meta.total_count|numberfmt }} {{ _plural('Review', 'Reviews', n=this.meta.total_count) }}
+              {{ this.info.total_reviews|numberfmt }} {{ _plural('Review', 'Reviews', n=this.info.total_reviews) }}
             </span>
             {{ stars(this.info.average, detailpage=true) }}
           </a>
@@ -144,7 +152,7 @@
         </p>
       {% endif %}
       {% if has_second_button %}
-        <div class="{{ 'split' if this.objects.length else ' full' }}">
+        <div class="{{ 'split' if this.info.total_reviews else 'full' }}">
           {% if user.logged_in() and this.user.has_rated %}
             <a class="button write-review support" id="edit-review" href="{{ url('app/ratings/edit', [slug]) }}"
                data-app="{{ slug }}">
@@ -158,7 +166,7 @@
       {% endif %}
     </div>
   {% placeholder %}
-    <p class="spinner alt padded"></p>
+    {% include "ratings/spinner.html" %}
   {% except %}
   {% end %}
 </section>

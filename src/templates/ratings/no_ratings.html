@@ -1,0 +1,7 @@
+<p class="no-results">
+  {% if response.info.total_reviews %}
+    {{ _('This app has no reviews in your language.') }}
+  {% else %}
+    {{ _('This app has no reviews.') }}
+  {% endif %}
+</p>

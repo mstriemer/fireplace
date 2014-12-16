@@ -14,9 +14,9 @@
     "yulelog"
   ],
   "dependencies": {
-    "marketplace-constants": "0.2.1",
+    "marketplace-constants": "~0.2.1",
     "marketplace-core-modules": "1.1.0",
-    "marketplace-elements": "0.1.3",
+    "marketplace-elements": "~0.1.7",
 
     "almond": "0.2.9",
     "jquery": "2.0.2",
