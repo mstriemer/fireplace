@@ -1,6 +1,6 @@
 define('newsletter',
-    ['capabilities', 'jquery', 'notification', 'requests', 'storage', 'urls', 'utils', 'z'],
-    function(capabilities, $, notification, requests, storage, urls, utils, z) {
+    ['capabilities', 'jquery', 'notification', 'nunjucks', 'requests', 'storage', 'urls', 'user', 'user_helpers', 'utils', 'z'],
+    function(capabilities, $, notification, nunjucks, requests, storage, urls, user, user_helpers, utils, z) {
     'use strict';
 
     function expandDetails($details) {
@@ -16,6 +16,23 @@ define('newsletter',
             }, 1);
         }
     }
+
+    z.page.on('click', '.account-settings .newsletter-signup', function(e) {
+        if (capabilities.widescreen()) {
+            e.preventDefault();
+            e.stopPropagation();
+            var footer = $('<div id="newsletter-footer"></div>');
+            footer.html(nunjucks.env.render('newsletter.html', {
+                user_region: user_helpers.region('restofworld'),
+                user_email: user.get_setting('email'),
+                user_lang: user_helpers.lang(),
+            }));
+            $('#newsletter-footer').remove();
+            $('#site-footer').prepend(footer);
+            $('#newsletter-footer .email').focus();
+            window.scrollTo(footer.offset());
+        }
+    });
 
     z.body.on('focus', '#newsletter-footer .email', function() {
         expandDetails($(this).siblings('.newsletter-details'));
