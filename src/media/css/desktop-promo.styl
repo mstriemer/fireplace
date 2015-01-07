@@ -78,29 +78,25 @@ $arrow-side-padding = 10px;
 }
 
 // Offsets
-$promo-widths = 1024px 1280px;
-for $promo-width in $promo-widths {
-    @media (min-width: $promo-width) {
-        $base-offset = ($promo-width - $image-width - 2 * $image-padding) * (1 / 2);
+$promo-width = $max-site-width;
+$base-offset = ($promo-width - $image-width - 2 * $image-padding) * (1 / 2);
 
-        .desktop-promo {
-            width: $promo-width;
-        }
+.desktop-promo {
+    width: $promo-width;
+}
 
-        .desktop-promo-items {
-            transform: translateX($base-offset);
-        }
+.desktop-promo-items {
+    transform: translateX($base-offset);
+}
 
-        .desktop-promo-items[data-action="center"],
-        .desktop-promo-items[data-action="start"] {
-            transform: translateX(-($image-width + 2 * $image-padding) * 1 + $base-offset);
-        }
+.desktop-promo-items[data-action="center"],
+.desktop-promo-items[data-action="start"] {
+    transform: translateX(-($image-width + 2 * $image-padding) * 1 + $base-offset);
+}
 
-        .desktop-promo-items[data-action="left"],
-        .desktop-promo-items[data-action="right"] {
-            transform: translateX(-($image-width + 2 * $image-padding) * 2 + $base-offset);
-        }
-    }
+.desktop-promo-items[data-action="left"],
+.desktop-promo-items[data-action="right"] {
+    transform: translateX(-($image-width + 2 * $image-padding) * 2 + $base-offset);
 }
 
 // Responsive styles.
@@ -109,7 +105,7 @@ for $promo-width in $promo-widths {
     display: none;
 }
 
-@media $wider-desktop {
+@media (min-width: $promo-width) {
     .desktop-promo {
         display: block;
     }
