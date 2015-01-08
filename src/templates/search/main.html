@@ -22,6 +22,9 @@
       {% include "compatibility_filtering.html" %}
       <a href="#" class="expand-toggle" title="{{ _('Expand') }}"></a>
     </header>
+
+    {% include '_includes/os_x_banner.html' %}
+
     <ol class="container listing search-listing c">
       {% for result in processor(this) %}
         <li class="item result app c">

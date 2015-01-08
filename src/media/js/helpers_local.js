@@ -1,7 +1,7 @@
 define('helpers_local',
-    ['feed', 'compatibility_filtering', 'content-ratings', 'models',
+    ['capabilities', 'compatibility_filtering', 'feed', 'content-ratings', 'models',
      'nunjucks', 'regions', 'settings', 'urls', 'user_helpers', 'utils_local', 'z'],
-    function(feed, compatibility_filtering, iarc, models,
+    function(capabilities, compatibility_filtering, feed, iarc, models,
              nunjucks, regions, settings, urls, user_helpers, utils_local, z) {
     var filters = nunjucks.require('filters');
     var globals = nunjucks.require('globals');
@@ -62,6 +62,7 @@ define('helpers_local',
     globals.user_helpers = user_helpers;
     globals.PLACEHOLDER_ICON = urls.media('fireplace/img/icons/placeholder.png');
     globals.compatibility_filtering = compatibility_filtering;
+    globals.osXInstallIssues = capabilities.osXInstallIssues;
 
     /* Helpers functions, provided in the default context. */
     function indexOf(arr, val) {

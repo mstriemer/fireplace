@@ -196,6 +196,21 @@ body {
     }
 }
 
+.text-banner {
+    line-height: 1.5;
+    padding: 10px 0;
+    text-align: center;
+
+    &.text-error,
+    &.text-error a {
+        color: $action-error;
+    }
+
+    &.text-error a {
+        text-decoration: underline;
+    }
+}
+
 @media $narrower-than-desktop {
     .hide-on-mobile {
         display: none;

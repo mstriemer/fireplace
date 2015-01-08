@@ -66,6 +66,10 @@
     {% endif %}
 
     {{ feed_app_tile(feed_app) if feed_app }}
+
+    {% if is_detail and app.device_types.indexOf('desktop') != -1  %}
+      {% include '_includes/os_x_banner.html' %}
+    {% endif %}
   </{{ tag }}>
   {% if tray and len(app.previews) %}
     <div class="tray previews full {{ 'single' if len(app.previews) == 1 }}">
