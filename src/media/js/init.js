@@ -1,7 +1,9 @@
 define('init',
-    ['core/cache', 'core/init', 'rewriters', 'routes', 'settings_app',
+    ['core/cache', 'core/init', 'core/log', 'rewriters', 'routes', 'settings_app',
      'settings_local'],
-    function(cache, init, rewriters, routes, settingsApp, settingsLocal) {
+    function(cache, init, log, rewriters, routes, settingsApp, settingsLocal) {
+
+    log('init').log('ready');
 
     rewriters.forEach(function(rewriter) {
         cache.addRewriter(rewriter);
