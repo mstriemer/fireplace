@@ -56,6 +56,7 @@ require([
     'core/utils',
     'utils_local',
     'core/views',
+    'views/feedback',  // This view registers global event handlers.
     'webactivities',
     'core/z'
 ], function(_) {
