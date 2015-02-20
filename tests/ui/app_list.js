@@ -193,15 +193,17 @@ appListPages.forEach(function(appListPage) {
         casper.test.begin(appListPage.name + ' page app list expand toggle', {
             test: function(test) {
                 var toggleLink = '.app-list-filters-expand-toggle';
+                var activeToggleLink = toggleLink + '.active';
                 waitForAppListPage(appListPage, function() {
                     // Test expand toggle.
                     test.assertVisible(toggleLink);
+                    test.assertNotVisible(activeToggleLink);
                 });
 
                 // Expanded view.
                 casper.thenClick(toggleLink);
 
-                casper.waitForSelector(toggleLink + '.active', function() {
+                casper.waitForSelector(activeToggleLink, function() {
                     test.assertExists('.app-list.expanded');
                     helpers.assertUATracking(test, [
                         'View type interactions',
