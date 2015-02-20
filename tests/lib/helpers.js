@@ -9,6 +9,7 @@ var mozApps = require('./mozApps');
 var baseTestUrl = 'http://localhost:8675';
 var mobileViewportSize = [320, 480];
 var viewportSize = mobileViewportSize;
+var pageAlreadyLoaded = false;
 var _currTestId;
 
 
@@ -89,11 +90,6 @@ function done(test) {
 }
 
 
-function waitForPageLoaded(cb) {
-    casper.waitForSelector('body.loaded', cb);
-}
-
-
 function waitForAppDetail(cb) {
     casper.waitForSelector('[data-page-type~="detail"]', cb);
 }
@@ -106,6 +102,33 @@ function waitForAppList(cb) {
 
 function waitForFeedItem(cb) {
     casper.waitForSelector('.feed-item-item', cb);
+}
+
+
+function waitForLoggedIn(cb) {
+    casper.waitForSelector('body.logged-in', cb);
+}
+
+
+function waitForPageLoaded(cb) {
+    if (pageAlreadyLoaded) {
+        casper.echo('Waiting for page load but page has already loaded. Use ' +
+                    'helpers.waitForPageLoadedAgain if this is intentional.',
+                    'WARNING');
+    } else {
+        pageAlreadyLoaded = true;
+    }
+    waitForPageLoadedAgain(cb);
+}
+
+
+function waitForPageLoadedAgain(cb) {
+    if (!pageAlreadyLoaded) {
+        casper.echo('Waiting for additional page load but page has not ' +
+                    'loaded. Please use helpers.waitForPageLoaded instead.',
+                    'WARNING');
+    }
+    casper.waitForSelector('body.loaded', cb);
 }
 
 
@@ -303,6 +326,7 @@ function setViewport() {
 
 
 casper.test.setUp(function() {
+    pageAlreadyLoaded = false;
     casper.start();
 });
 
@@ -332,5 +356,7 @@ module.exports = {
     waitForAppDetail: waitForAppDetail,
     waitForAppList: waitForAppList,
     waitForFeedItem: waitForFeedItem,
+    waitForLoggedIn: waitForLoggedIn,
     waitForPageLoaded: waitForPageLoaded,
+    waitForPageLoadedAgain: waitForPageLoadedAgain,
 };

@@ -423,7 +423,7 @@ casper.test.begin('Test collection detail page for app tile expanded state.', {
 
         // Visit a collection details page and check it's not expanded.
         casper.thenOpen(helpers.makeUrl('/feed/collection/top-games'), function() {
-            helpers.waitForPageLoaded(function() {
+            helpers.waitForPageLoadedAgain(function() {
                 test.assertDoesntExist('.app-list.expanded');
                 test.assertDoesntExist('.previews');
             });
