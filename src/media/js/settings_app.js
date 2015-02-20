@@ -1,4 +1,6 @@
-define('settings_app', ['core/capabilities', 'core/l10n', 'core/settings', 'core/storage', 'underscore'], function(capabilities, l10n, settings, storage, _) {
+define('settings_app',
+    ['core/capabilities', 'core/l10n', 'core/settings', 'settings_local', 'core/storage'],
+    function(capabilities, l10n, settings, settings_local, storage) {
     var gettext = l10n.gettext;
 
     var base_settings = JSON.parse(document.body.getAttribute('data-settings') || '{}');
@@ -130,4 +132,6 @@ define('settings_app', ['core/capabilities', 'core/l10n', 'core/settings', 'core
         iframe_potatolytics_src: 'https://marketplace.firefox.com/potatolytics.html',
         offline_msg: gettext('Sorry, you are currently offline. Please try again later.'),
     });
+
+    settings._extend(settings_local);
 });
