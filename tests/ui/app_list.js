@@ -270,11 +270,14 @@ appListPages.forEach(function(appListPage) {
                     test.assertExists(appNthChild(appListPage.appLimit - 1));
                     test.assertNotExists(appNthChild(appListPage.appLimit + 1));
 
-                    waitForLoadMore(function() {
-                        casper.click('.wordmark');
+                    waitForLoadMore();
+                    casper.thenClick('.wordmark');
+
+                    // Wait for the homepage to load before moving back.
+                    helpers.waitForFeedItem(function() {
                         casper.back();
-                        casper.waitUntilVisible(appNthChild(APP_LIMIT_LOADMORE));
                     });
+                    casper.waitUntilVisible(appNthChild(APP_LIMIT_LOADMORE));
                 });
 
                 helpers.done(test);

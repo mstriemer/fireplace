@@ -104,6 +104,11 @@ function waitForAppList(cb) {
 }
 
 
+function waitForFeedItem(cb) {
+    casper.waitForSelector('.feed-item-item', cb);
+}
+
+
 function makeUrl(path) {
     return baseTestUrl + path;
 }
@@ -326,5 +331,6 @@ module.exports = {
     tearDown: tearDown,
     waitForAppDetail: waitForAppDetail,
     waitForAppList: waitForAppList,
+    waitForFeedItem: waitForFeedItem,
     waitForPageLoaded: waitForPageLoaded,
 };
