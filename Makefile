@@ -16,7 +16,7 @@ DOMAIN?=marketplace.firefox.com
 SERVER?=prod
 
 test: css templates
-	LC_ALL=en-US $(CASPERJS_BIN) test tests/ui/
+	gulp lint && karma start --single-run && LC_ALL=en-US $(CASPERJS_BIN) test tests/ui/
 
 deploy:
 	git fetch && git reset --hard origin/master && npm install && make includes
