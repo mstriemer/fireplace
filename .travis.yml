@@ -42,10 +42,12 @@ script:
 # Start the webserver.
   - "API=mocklocal make serve &"
   - "sleep 10"
+# Run jshint
+  - "make jshint"
 # Run unit tests.
-  - "./node_modules/karma/bin/karma start --single-run"
+  - "make unittest"
 # Run UI tests.
-  - "make test"
+  - "make uitest"
 # Upload captures.
   - "sh tests/upload-captures.sh"
 # Test package.
