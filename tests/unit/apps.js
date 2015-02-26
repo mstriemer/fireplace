@@ -12,7 +12,7 @@ define('tests/unit/apps',
     }
 
 
-    describe.only('apps.incompat', function() {
+    describe('apps.incompat', function() {
         it('can work',
            h.injector(mockCapabilities(true)).run(['apps'], function(apps) {
             var product = {
