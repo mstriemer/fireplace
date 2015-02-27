@@ -126,6 +126,7 @@ define('installer_direct',
 
     function _install(product, opt) {
         logger.log('Using direct installer for ' + product.manifest_url);
+        logger.log('navigator.mozApps.mock: ' + navigator.mozApps.mock);
         var def = defer.Deferred();
         opt.data = opt.data || {};
 

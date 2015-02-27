@@ -2,9 +2,8 @@
     Test for the search results page.
     Note that a lot of it is already tested in the app_list.js tests.
 */
-var appList = require('../lib/app_list');
-var constants = require('../lib/constants');
-var helpers = require('../lib/helpers');
+var appList = helpers.localRequire('tests/lib/app_list');
+var constants = helpers.localRequire('tests/lib/constants');
 
 
 casper.test.begin('Test search results header', {

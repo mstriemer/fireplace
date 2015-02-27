@@ -1,17 +1,18 @@
 var system = require('system');
-var require = patchRequire(require);
+if (!require.config) {
+    // PhantomJS
+    require = patchRequire(require);
+}
 var utils = require('utils');
 
-var _ = require('../../node_modules/underscore');
-
-var mozApps = require('./mozApps');
+var mozApps = localRequire('tests/lib/mozApps');
+var _ = localRequire('node_modules/underscore/underscore');
 
 var baseTestUrl = 'http://localhost:8675';
 var mobileViewportSize = [320, 480];
 var viewportSize = mobileViewportSize;
 var pageAlreadyLoaded = false;
 var _currTestId;
-
 
 casper.on('viewport.changed', function(dimensions) {
     casper.echo('Viewport dimensions changed to: ' +
@@ -38,13 +39,25 @@ casper.on('step.error', function() {
 });
 
 
+casper.on('page.initialized', function() {
+    casper.evaluate(function() {
+        window.localStorage.clear();
+    });
+});
+
+
 if (system.env.SHOW_TEST_CONSOLE) {
     casper.on('remote.message', function(message) {
-        casper.echo(message, 'INFO');
+        casper.echo(message);
     });
     casper.on('page.error', function(message) {
         casper.echo(message, 'ERROR');
     });
+}
+
+
+function localRequire(path) {
+    return require(require('fs').absolute(path));
 }
 
 
@@ -54,8 +67,9 @@ var viewports = {
 };
 
 
+var f = 0;
 function startCasper(path, opts) {
-    if (path && path.constructor === Object) {
+    if (_.isObject(path)) {
         opts = path;
         path = opts.path || opts.url || '/';
     } else if (path === undefined) {
@@ -218,6 +232,13 @@ function assertUATrackingPageVar(test, key, val) {
 }
 
 
+function assertNotVisible(selector) {
+    casper.test.assert(!casper.evaluate(function(sel) {
+        return $(sel).is(':visible');
+    }, selector));
+}
+
+
 function parseQueryString(qs) {
     var vars = {}, param, params;
     if (qs === undefined) {
@@ -343,6 +364,7 @@ module.exports = {
     assertAPICallWasMade: assertAPICallWasMade,
     assertContainsText: assertContainsText,
     assertHasFocus: assertHasFocus,
+    assertNotVisible: assertNotVisible,
     assertUATracking: assertUATracking,
     assertUATrackingPageVar: assertUATrackingPageVar,
     assertWaitForSelector: assertWaitForSelector,
@@ -351,6 +373,7 @@ module.exports = {
     done: done,
     fake_login: fake_login,
     makeUrl: makeUrl,
+    localRequire: localRequire,
     startCasper: startCasper,
     tearDown: tearDown,
     waitForAppDetail: waitForAppDetail,

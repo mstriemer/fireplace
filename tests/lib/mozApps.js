@@ -13,7 +13,19 @@ function initialize() {
         }
     }, 50);
 
-    function _initialize() {
+    function _initialize(finalRun) {
+        if (document.readyState === 'complete' &&
+                window.navigator.mozApps.mock) {
+            // Seems like we're done, but let's mock it once more.
+            if (!finalRun) {
+                setTimeout(function() {
+                    _initialize(true);
+                }, 100);
+            } else {
+                console.log('[mozApps] Mock mozApps initialized');
+            }
+            return true;
+        }
         // Keep track of installed apps.
         var manifests = [];
 
@@ -32,8 +44,12 @@ function initialize() {
                 };
 
                 setTimeout(function() {
-                    if (request.onsuccess && request.onsuccess.constructor === Function) {
+                    if (window._.isFunction(request.onsuccess)) {
+                        console.log('[mozApps] Calling request.onsuccess');
                         request.onsuccess();
+                    } else {
+                        console.log('[mozApps] Not calling request.onsuccess');
+                        console.log(request.onsuccess);
                     }
                 });
 
@@ -43,14 +59,20 @@ function initialize() {
                 var request = {};
 
                 setTimeout(function() {
-                    if (request.onsuccess && request.onsuccess.constructor === Function) {
+                    if (window._.isFunction(request.onsuccess)) {
+                        console.log('[mozApps] Calling request.onsuccess');
                         request.onsuccess();
+                    } else {
+                        console.log('[mozApps] Not calling request.onsuccess');
+                        console.log(request.onsuccess);
                     }
                 });
 
                 return request;
             },
             install: function(manifest) {
+                console.log('[mozApps] Installing app');
+                console.log(manifest);
                 var request = {
                     result: {
                         installState: 'installed',
@@ -64,8 +86,12 @@ function initialize() {
                 };
 
                 setTimeout(function() {
-                    if (request.onsuccess && request.onsuccess.constructor === Function) {
+                    if (window._.isFunction(request.onsuccess)) {
+                        console.log('[mozApps] Calling request.onsuccess');
                         request.onsuccess();
+                    } else {
+                        console.log('[mozApps] Not calling request.onsuccess');
+                        console.log(request.onsuccess);
                     }
                 });
 
@@ -76,14 +102,11 @@ function initialize() {
         };
 
         window.navigator.mozApps.installPackage = window.navigator.mozApps.install;
-        console.log('[mozApps] Mock mozApps initialized');
+        window.navigator.mozApps.mock = true;
+        console.log('[mozApps] Mock mozApps mocked');
 
         // Keep mocking it until it won't get overriden.
-        if (document.readyState !== 'complete') {
-            return false;
-        } else {
-            return true;
-        }
+        return false;
     }
 }
 

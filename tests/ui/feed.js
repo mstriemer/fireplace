@@ -1,10 +1,8 @@
 /*
     Tests for the Feed and Feed detail pages.
 */
-var constants = require('../lib/constants');
-var helpers = require('../lib/helpers');
-
-var _ = require('../../node_modules/underscore');
+var constants = helpers.localRequire('tests/lib/constants');
+var _ = helpers.localRequire('node_modules/underscore/underscore');
 
 var feedDetailPages = [
     {

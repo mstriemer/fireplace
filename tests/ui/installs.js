@@ -2,9 +2,7 @@
     Test for app installs using the mozApps mock.
     Such as button states, UA tracking.
 */
-var appList = require('../lib/app_list');
-var helpers = require('../lib/helpers');
-var mozApps = require('../lib/mozApps');
+var appList = helpers.localRequire('tests/lib/app_list');
 
 
 casper.test.begin('Test mozApps mock', {
@@ -14,7 +12,10 @@ casper.test.begin('Test mozApps mock', {
         helpers.waitForPageLoaded(function() {
             test.assert(casper.evaluate(function() {
                 return window.require('core/capabilities').webApps;
-            }), 'Check mozApps mock is working');
+            }), 'Check webApps capability');
+            test.assert(casper.evaluate(function() {
+                return window.navigator.mozApps.mock;
+            }), 'Check mozApps is mocked');
         });
 
         helpers.done(test);

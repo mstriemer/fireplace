@@ -2,7 +2,9 @@
     Helper functions related to app lists.
     Prominently used in app_list.js and search.js tests.
 */
-var constants = require('./constants');
+var constants = helpers.localRequire('tests/lib/constants');
+var _ = helpers.localRequire('node_modules/underscore/underscore');
+
 
 function appNthChild(n) {
     return '.app-list-app:nth-child(' + n + ')';

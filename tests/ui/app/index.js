@@ -1,9 +1,7 @@
 /*
     Tests for the app detail page.
 */
-var appList = require('../../lib/app_list');
-var helpers = require('../../lib/helpers');
-
+var appList = helpers.localRequire('tests/lib/app_list');
 
 casper.test.begin('Test app detail', {
     test: function(test) {

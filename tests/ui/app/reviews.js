@@ -1,8 +1,7 @@
 /*
     Tests for app reviews.
 */
-var constants = require('../../lib/constants');
-var helpers = require('../../lib/helpers');
+var constants = helpers.localRequire('tests/lib/constants');
 
 function testAddReviewForm(test) {
     // Checks review form existence and validation.

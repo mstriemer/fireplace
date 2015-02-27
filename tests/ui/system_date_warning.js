@@ -1,8 +1,3 @@
-var helpers = require('../lib/helpers');
-
-helpers.startCasper();
-
-
 function restoreDate() {
     casper.echo('Restoring window.Date', 'INFO');
     casper.evaluate(function() {
@@ -14,7 +9,7 @@ function restoreDate() {
 casper.test.begin('Check date check dialogue', {
 
     setUp: function() {
-        casper.once('page.initialized', function() {
+        casper.once('load.finished', function() {
             casper.echo('Overriding window.Date', 'INFO');
             casper.evaluate(function() {
                 // Backdate `Date` for testing.
@@ -36,6 +31,7 @@ casper.test.begin('Check date check dialogue', {
     },
 
     test: function(test) {
+        helpers.startCasper();
 
         casper.waitForSelector('#splash-overlay.hide', function() {
             test.assertVisible('#error-overlay.system-date', 'Check date error message is shown');

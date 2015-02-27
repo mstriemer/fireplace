@@ -1,5 +1,4 @@
-var helpers = require('../lib/helpers');
-var _ = require('../../node_modules/underscore');
+var _ = helpers.localRequire('node_modules/underscore/underscore');
 
 casper.test.begin('Test settings', {
     test: function(test) {
@@ -9,8 +8,10 @@ casper.test.begin('Test settings', {
             test.assertNotVisible('.account-settings .logout');
             test.assertNotVisible('.account-settings-save button[type="submit"]');
             test.assertNotVisible('.account-settings .email');
-            test.assertNotVisible('.account-settings input[name="display_name"]');
-            test.assertNotVisible('.account-settings input[name="enable_recommendations"]');
+            // These fail using test.assertNotVisible possibly because the
+            // parent element is hidden not this element.
+            helpers.assertNotVisible('.account-settings input[name="display_name"]');
+            helpers.assertNotVisible('.account-settings input[name="enable_recommendations"]');
             helpers.fake_login();
         });
 

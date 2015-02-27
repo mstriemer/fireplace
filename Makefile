@@ -19,7 +19,7 @@ test:
 	make jshint && make unittest && make uitest
 
 uitest: css templates
-	LC_ALL=en-US $(CASPERJS_BIN) test tests/ui/
+	LC_ALL=en-US $(CASPERJS_BIN) test tests/ui/  --includes=tests/lib/shim.js
 
 unittest:
 	@node_modules/karma/bin/karma start --single-run

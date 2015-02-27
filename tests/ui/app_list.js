@@ -6,12 +6,11 @@
     If you are testing something that can be found throughout all or most
     app list pages, here is a good place to put it for ultimate coverage.
 */
-var appList = require('../lib/app_list');
-var constants = require('../lib/constants');
-var helpers = require('../lib/helpers');
+var appList = helpers.localRequire('tests/lib/app_list');
+var constants = helpers.localRequire('tests/lib/constants');
 
-var _ = require('../../node_modules/underscore');
-var jsuri = require('../../node_modules/jsuri');
+var _ = helpers.localRequire('node_modules/underscore/underscore');
+var jsuri = helpers.localRequire('node_modules/jsuri/Uri');
 
 var appNthChild = appList.appNthChild;
 var waitForAppListPage = appList.waitForAppListPage;
@@ -152,7 +151,7 @@ appListPages.forEach(function(appListPage) {
                 } else {
                     // If no src is configured, it means this app list does not
                     // contain any links.
-                    test.assertEqual(href, '', 'Assert href is empty');
+                    test.assert(!href, 'Assert href is empty');
                 }
 
                 // Test authors are not a link.
@@ -243,13 +242,14 @@ appListPages.forEach(function(appListPage) {
 
                         // Test model cache after load more.
                         if (!appListPage.noModelCache) {
-                            var modelCount = casper.evaluate(function() {
+                            var modelKeys = casper.evaluate(function() {
                                 return Object.keys(
                                     window.require('core/models')('app')
-                                        .data_store.app).length;
+                                        .data_store.app);
                             });
+                            casper.echo(modelKeys);
                             test.assertEqual(
-                                modelCount,
+                                modelKeys.length,
                                 APP_LIMIT_LOADMORE,
                                 'Assert model cache after Load more');
                         }

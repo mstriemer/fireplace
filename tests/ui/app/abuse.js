@@ -1,5 +1,3 @@
-var helpers = require('../lib/helpers');
-
 casper.test.begin('App abuse tests', {
     test: function(test) {
         helpers.startCasper({path: '/app/foo/abuse'});

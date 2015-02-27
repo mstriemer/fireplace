@@ -1,8 +1,7 @@
 /*
     Test scroll states upon navigation.
 */
-var appList = require('../lib/app_list');
-var helpers = require('../lib/helpers');
+var appList = helpers.localRequire('tests/lib/app_list');
 
 function getScrollY() {
     return casper.evaluate(function() {

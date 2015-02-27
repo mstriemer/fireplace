@@ -1,5 +1,3 @@
-var helpers = require('../lib/helpers');
-
 function restoreOnlineState() {
     casper.echo('Changing window.__mockOffLine -> false', 'INFO');
     casper.evaluate(function() {
@@ -9,7 +7,7 @@ function restoreOnlineState() {
 
 casper.test.begin('Check offline dialogue', {
     setUp: function() {
-        casper.once('page.initialized', function() {
+        casper.once('load.finished', function() {
             casper.echo('Setting window.__mockOffLine -> true', 'INFO');
             casper.evaluate(function() {
                 window.__mockOffLine = true;

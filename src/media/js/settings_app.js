@@ -1,8 +1,6 @@
 define('settings_app',
-    ['core/capabilities', 'core/l10n', 'core/settings', 'settings_local',
-     'core/storage'],
-    function(capabilities, l10n, settings, settings_local,
-             storage) {
+    ['core/l10n', 'core/settings', 'settings_local', 'core/storage'],
+    function(l10n, settings, settings_local, storage) {
     var gettext = l10n.gettext;
 
     var base_settings = JSON.parse(document.body.getAttribute('data-settings') || '{}');
@@ -12,7 +10,7 @@ define('settings_app',
         window.location.search || '').indexOf('preview=true') > 0 ? ['pro'] : null;
 
     function offline_cache_enabled() {
-        if (storage.getItem('offline_cache_disabled') || capabilities.phantom) {
+        if (storage.getItem('offline_cache_disabled')) {
             return false;
         }
         return window.location.search.indexOf('cache=false') === -1;
