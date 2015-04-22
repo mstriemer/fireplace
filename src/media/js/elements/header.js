@@ -14,8 +14,7 @@
 
         [data-header-child--input] - if set, then the child will expect an
         input element. When the header child is toggled, the input will be
-        focused. When the input is blurred, then the header child will toggle
-        closed.
+        focused.
 
     <mkt-header-child-toggle>
         Toggles the visibility of a <mkt-header-child>.
@@ -104,22 +103,6 @@ define('elements/header',
                     if (root.isInput) {
                         // If main element is input, then hide child on blur.
                         var input = root.input;
-                        input.onblur = function(e) {
-                            setTimeout(function() {
-                                if (e) {
-                                    var target = e.explicitOriginalTarget ||
-                                                 document.activeElement;
-                                    if (target.getAttribute &&
-                                        target.getAttribute('for') == root.id) {
-                                        // Don't trigger if blurring on toggle.
-                                        return;
-                                    }
-                                }
-
-                                document.querySelector('mkt-header')
-                                        .toggleChildren(root.id, false);
-                            }, 150);
-                        };
                         // Clear input on submit.
                         $(root.querySelector('form')).submit(function(e) {
                             e.preventDefault();
